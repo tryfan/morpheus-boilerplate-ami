@@ -1,0 +1,20 @@
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - set_fact:
+        instance_name: "{{ ami_name }}_test"
+
+    - name: get ec2 facts
+      ec2_instance_info:
+        filters:
+          "tag:Name": "{{ instance_name }}"
+      register: ec2
+
+    # - debug:
+    #     var: ec2
+
+    - name: "destroy ec2 {{ instance_name }}"
+      ec2_instance:
+        region: us-east-1
+        instance_ids: "{{ ec2.instances[0].instance_id }}"
+        state: absent

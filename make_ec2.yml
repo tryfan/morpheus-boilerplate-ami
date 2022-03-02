@@ -1,0 +1,36 @@
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: get ami-id
+      ec2_ami_info:
+        filters:
+          name: "{{ ami_name }}"
+      register: ami
+
+    - set_fact:
+        ami_id: "{{ ami['images'][0]['image_id'] }}"
+        ami_root_device_name: "{{ ami['images'][0]['root_device_name'] }}"
+
+    - name: create ec2s
+      ec2_instance:
+        # availability_zone: "us-east-1d"
+        region: us-east-1
+        key_name: mackey
+        security_group: default
+        instance_type: t3.large
+        image_id: "{{ ami_id }}"
+        volumes:
+          - device_name: "{{ ami_root_device_name }}"
+            ebs:
+              volume_type: gp2
+              volume_size: 40
+              delete_on_termination: true
+        tags:
+          Name: "{{ ami_name }}_test"
+        # vpc_subnet_id: subnet-e91b1de7
+        network:
+          assign_public_ip: true
+      register: ec2info
+    
+    - debug:
+        msg: "URL: https://{{ ec2info.instances[0].public_dns_name }} Password: {{ ec2info.instances[0].instance_id }}@AWS"
