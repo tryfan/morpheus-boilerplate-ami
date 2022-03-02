@@ -1,5 +1,7 @@
 - hosts: localhost
   gather_facts: false
+  vars:
+    keypair: "mackey"
   tasks:
     - name: get ami-id
       ec2_ami_info:
@@ -13,9 +15,8 @@
 
     - name: create ec2s
       ec2_instance:
-        # availability_zone: "us-east-1d"
         region: us-east-1
-        key_name: mackey
+        key_name: "{{ keypair }}"
         security_group: default
         instance_type: t3.large
         image_id: "{{ ami_id }}"
@@ -27,7 +28,6 @@
               delete_on_termination: true
         tags:
           Name: "{{ ami_name }}_test"
-        # vpc_subnet_id: subnet-e91b1de7
         network:
           assign_public_ip: true
       register: ec2info
