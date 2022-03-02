@@ -14,4 +14,6 @@ Run `create_ec2s.sh <Morpheus version>` to create a Morpheus appliance using the
 
 The Ansible playbook will output the ec2 DNS name and the password, which is: `<AWS instance id>@AWS`
 
+The default username in Morpheus is admin.
+
 You can use these AMIs in other build processes.  My own use case was creating multiple versions of Morpheus for testing our open source contributions.
