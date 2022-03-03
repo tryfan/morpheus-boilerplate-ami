@@ -18,3 +18,5 @@ You can use these AMIs in other build processes.  My own use case was creating m
 
 ## NOTE
 The `morpheus_fqdn` tag on the instance is used on first startup to set the URL for Morpheus.  If it is missing, It will be set to the public IPv4 address of the instance.
+
+It is required that the created instance include the `instance_metadata_tags = "enabled"` flag when using Terraform.  This allows the instance to query it's tags through the instance meta-data.
