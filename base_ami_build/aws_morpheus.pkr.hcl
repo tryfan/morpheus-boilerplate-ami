@@ -1,5 +1,4 @@
 variable "morpheus_version" { default = "5.4.3-1" }
-variable "aws_owner_id" {}
 
 source "amazon-ebs" "morpheus_ubuntu20" {
     // skip_create_ami = true
@@ -11,14 +10,14 @@ source "amazon-ebs" "morpheus_ubuntu20" {
             virtualization-type = "hvm"
             name = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server*"
         }
-        owners = [ "${var.aws_owner_id}" ]
+        owners = [ "099720109477" ]
         most_recent = true
     }
     instance_type = "t3.large"
     launch_block_device_mappings {
         device_name = "/dev/sda1"
         volume_size = 40
-        volume_type = "gp2"
+        volume_type = "gp3"
         delete_on_termination = true
     }
     ssh_username = "ubuntu"
