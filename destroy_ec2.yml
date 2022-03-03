@@ -16,5 +16,6 @@
     - name: "destroy ec2 {{ instance_name }}"
       ec2_instance:
         region: us-east-1
-        instance_ids: "{{ ec2.instances[0].instance_id }}"
+        instance_ids: "{{ item.instance_id }}"
         state: absent
+      loop: "{{ ec2.instances }}"
